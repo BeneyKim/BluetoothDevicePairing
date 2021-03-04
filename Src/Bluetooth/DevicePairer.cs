@@ -64,6 +64,7 @@ namespace BluetoothDevicePairing.Bluetooth
                 .GetAwaiter().GetResult().Status;
             if (res != DevicePairingResultStatus.Paired)
             {
+                Console.WriteLine($"Failed to pair device. Status = {res}");
                 throw new Exception($"Failed to pair device. Status = {res}");
             }
         }

@@ -2,6 +2,8 @@ using System;
 using BluetoothDevicePairing.Bluetooth;
 using BluetoothDevicePairing.Command.Utils;
 using CommandLine;
+using Windows.Devices.Enumeration;
+using Windows.Foundation;
 
 namespace BluetoothDevicePairing.Command
 {
@@ -36,6 +38,24 @@ namespace BluetoothDevicePairing.Command
             }
         }
 
+        private static async void PairWithMac(MacAddress mac, int discoveryTime, Utils.DeviceType deviceType, string pin)
+        {
+            String deviceId = $"Bluetooth#Bluetootha8:6d:aa:5f:35:51-{mac}";
+            IAsyncOperation<DeviceInformation> devInfoTask = 
+                DeviceInformation.CreateFromIdAsync(deviceId);
+
+            Console.WriteLine($"Paring with Device deviceId-{deviceId} Step 1");
+
+            DeviceInformation devInfo = await devInfoTask;
+
+            Console.WriteLine($"Paring with Device deviceId-{deviceId} Step 2");
+
+            Device device = new Device(devInfo);
+            DevicePairer.PairDevice(device, pin);
+            return;
+        }
+
+        /*
         private static void PairWithMac(MacAddress mac, int discoveryTime, Utils.DeviceType deviceType, string pin)
         {
             var devices = DeviceFinder.FindDevicesByMac(DeviceDiscoverer.DiscoverBluetoothDevices(discoveryTime), mac, deviceType);
@@ -55,6 +75,7 @@ namespace BluetoothDevicePairing.Command
             throw new Exception(
                 $"{devices.Count} devices with the mac '{mac}' found. Don't know which one to choose");
         }
+        */
 
         private static void PairWithName(string name, int discoveryTime, Utils.DeviceType deviceType, string pin)
         {

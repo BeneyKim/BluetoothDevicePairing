@@ -5,6 +5,6 @@
         <BaseIntermediateOutputPath>$(BuildFolder)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
         <WarningLevel>5</WarningLevel>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Version>0.0-dev</Version>
+        <Version>0.1-dev</Version>
     </PropertyGroup>
 </Project>

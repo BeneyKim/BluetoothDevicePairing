@@ -25,7 +25,7 @@ namespace BluetoothDevicePairing.Command
 
         private static void PrintDevice(Device d)
         {
-            Console.WriteLine($"{GetType(d),2}|{d.Mac}|{GetPairedStatus(d),6}|{GetConnectionStatus(d),9}|{GetName(d)}");
+            Console.WriteLine($"{GetType(d),2}|{d.Mac}|{GetPairedStatus(d),6}|{GetConnectionStatus(d),9}|{GetName(d)}|{GetId(d)}");
         }
 
         private static string GetType(Device d)
@@ -46,6 +46,11 @@ namespace BluetoothDevicePairing.Command
         private static string GetConnectionStatus(Device d)
         {
             return d.IsConnected ? "Connected" : "";
+        }
+
+        private static string GetId(Device d)
+        {
+            return d.Info.Id;
         }
     }
 }
