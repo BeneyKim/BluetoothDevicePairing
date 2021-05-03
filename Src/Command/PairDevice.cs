@@ -1,14 +1,15 @@
 using System;
+using System.Linq;
 using BluetoothDevicePairing.Bluetooth;
 using BluetoothDevicePairing.Command.Utils;
 using CommandLine;
+using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
-using Windows.Foundation;
 
 namespace BluetoothDevicePairing.Command
 {
     [Verb("pair",
-        HelpText = "Pair and connect to a device. If device is paired but not connected, this command unpairs it first and then pairs and connects")]
+    HelpText = "Pair and connect to a device. If device is paired but not connected, this command unpairs it first and then pairs and connects")]
     internal sealed class PairDeviceOptions : PairAndUnpairDeviceOptions
     {
         [Option("discovery-time", Default = 10,
@@ -40,18 +41,24 @@ namespace BluetoothDevicePairing.Command
 
         private static async void PairWithMac(MacAddress mac, int discoveryTime, Utils.DeviceType deviceType, string pin)
         {
-            String deviceId = $"Bluetooth#Bluetootha8:6d:aa:5f:35:51-{mac}";
-            IAsyncOperation<DeviceInformation> devInfoTask = 
-                DeviceInformation.CreateFromIdAsync(deviceId);
+            BluetoothAdapter defaultBtAdapter = await BluetoothAdapter.GetDefaultAsync();
+            string localBtAddress = string.Join(":",
+                    BitConverter.GetBytes(defaultBtAdapter.BluetoothAddress).Reverse().Select(b => b.ToString("X2"))).Substring(6).ToLower();
 
-            Console.WriteLine($"Paring with Device deviceId-{deviceId} Step 1");
+            string deviceId = $"Bluetooth#Bluetooth{localBtAddress}-{mac}";
 
-            DeviceInformation devInfo = await devInfoTask;
+            try
+            {
+                DeviceInformation devInfo = await DeviceInformation.CreateFromIdAsync(deviceId); ;
+                Console.WriteLine($"Paring with Device deviceId-{deviceId}");
 
-            Console.WriteLine($"Paring with Device deviceId-{deviceId} Step 2");
-
-            Device device = new Device(devInfo);
-            DevicePairer.PairDevice(device, pin);
+                Device device = new Device(devInfo);
+                DevicePairer.PairDevice(device, "0000");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.StackTrace}");
+            }
             return;
         }
 

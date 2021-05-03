@@ -11,7 +11,8 @@ namespace BluetoothDevicePairing.Bluetooth
 
             if (device.IsConnected)
             {
-                throw new Exception("Device is already connected, no need to pair");
+                Console.WriteLine("Device is already connected, no need to pair");
+                return;
             }
 
             if (device.IsPaired)
@@ -60,7 +61,8 @@ namespace BluetoothDevicePairing.Bluetooth
             // Therefore, I decided not to use DevicePairingKinds.DisplayPin flag.
 
             var res = device.Pairing.Custom
-                .PairAsync(DevicePairingKinds.ConfirmOnly | DevicePairingKinds.ProvidePin | DevicePairingKinds.ConfirmPinMatch, DevicePairingProtectionLevel.None)
+                // .PairAsync(DevicePairingKinds.ConfirmOnly | DevicePairingKinds.ProvidePin | DevicePairingKinds.ConfirmPinMatch, DevicePairingProtectionLevel.None)
+                .PairAsync(DevicePairingKinds.ConfirmOnly, DevicePairingProtectionLevel.None)
                 .GetAwaiter().GetResult().Status;
             if (res != DevicePairingResultStatus.Paired)
             {
