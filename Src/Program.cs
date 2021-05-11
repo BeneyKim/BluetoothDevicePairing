@@ -15,7 +15,7 @@ namespace BluetoothDevicePairing
 
         private static bool WaitOnError;
 
-        private static bool IS_SOCK_MODE = false;
+        private static bool IS_SOCK_MODE = true;
 
         private static void ParseCommandLineAndExecuteActions(string[] args)
         {
