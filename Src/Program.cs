@@ -28,12 +28,20 @@ namespace BluetoothDevicePairing
 
         private static int Main(string[] args)
         {
-            if (args.Length == 1)
+            if (args.Length > 0)
             {
                 Console.WriteLine(args[0]);
                 if ("background".Equals(args[0]))
                 {
                     IS_SOCK_MODE = true;
+                }
+                else if ("discover".Equals(args[0]))
+                {
+                    IS_SOCK_MODE = false;
+                }
+                else if ("pair".Equals(args[0]))
+                {
+                    IS_SOCK_MODE = false;
                 }
             }
 

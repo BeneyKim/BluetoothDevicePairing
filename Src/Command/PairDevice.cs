@@ -53,7 +53,7 @@ namespace BluetoothDevicePairing.Command
                 Console.WriteLine($"Paring with Device deviceId-{deviceId}");
 
                 Device device = new Device(devInfo);
-                DevicePairer.PairDevice(device, "0000");
+                DevicePairer.PairDevice(device, "1234");
             }
             catch (Exception ex)
             {
